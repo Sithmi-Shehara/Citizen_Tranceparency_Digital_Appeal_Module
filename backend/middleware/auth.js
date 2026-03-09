@@ -22,8 +22,14 @@ const protect = async (req, res, next) => {
     }
 
     try {
-      // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      // Verify token using the same secret used when issuing tokens
+      const secret = process.env.JWT_SECRET || 'change_this_in_production';
+
+      if (!process.env.JWT_SECRET) {
+        console.warn('JWT_SECRET is not set. Using a default development secret in auth middleware.');
+      }
+
+      const decoded = jwt.verify(token, secret);
 
       // Get user from token
       req.user = await User.findById(decoded.id).select('-password');
