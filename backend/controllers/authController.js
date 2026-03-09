@@ -222,10 +222,23 @@ const loginUser = async (req, res) => {
         user = await User.findById(user._id).select('+password');
       } catch (createErr) {
         console.error('Error bootstrapping admin user:', createErr);
-        return res.status(500).json({
-          success: false,
-          message: 'Server error while creating admin user. Please try again.',
-        });
+
+        // If the user already exists (duplicate key), fall back to loading that user
+        if (createErr.code === 11000) {
+          user = await User.findOne({ email: 'admin@example.com' }).select('+password');
+        } else if (createErr.name === 'ValidationError') {
+          const errs = Object.values(createErr.errors).map((e) => e.message);
+          return res.status(400).json({
+            success: false,
+            message: 'Admin user validation failed',
+            errors: errs,
+          });
+        } else {
+          return res.status(500).json({
+            success: false,
+            message: 'Server error while creating admin user. Please try again.',
+          });
+        }
       }
     }
 
