@@ -1,0 +1,34 @@
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Blue Theme Colors */
+:root {
+  --primary-blue: #1280ED;
+  --primary-blue-dark: #0A73D9;
+  --secondary-blue: #E8EDF2;
+  --text-primary: #0D141C;
+  --text-secondary: #4D7399;
+  --background-white: #FFFFFF;
+  --background-light: #F7FAFC;
+  --border-color: #CFDBE8;
+  --success-green: #088738;
+  --admin-dark: #121A21;
+  --admin-card: #243647;
+  --admin-nav: #1A2633;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
