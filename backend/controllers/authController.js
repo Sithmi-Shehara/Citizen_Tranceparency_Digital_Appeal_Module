@@ -202,45 +202,8 @@ const loginUser = async (req, res) => {
       });
     }
 
-    // Step 2: Find user with password field
-    let user = await User.findOne({ email: emailValidation.value }).select('+password');
-
-    // If no user exists and this is the default admin email, bootstrap an admin account
-    if (!user && emailValidation.value === 'admin@example.com') {
-      try {
-        user = await User.create({
-          fullName: 'System Administrator',
-          nicNumber: '999999999V',
-          drivingLicense: 'B1234567',
-          email: 'admin@example.com',
-          mobileNumber: '0771234567',
-          password, // use the password provided on first login
-          role: 'admin',
-        });
-
-        // Re-select with password for consistency with the rest of the flow
-        user = await User.findById(user._id).select('+password');
-      } catch (createErr) {
-        console.error('Error bootstrapping admin user:', createErr);
-
-        // If the user already exists (duplicate key), fall back to loading that user
-        if (createErr.code === 11000) {
-          user = await User.findOne({ email: 'admin@example.com' }).select('+password');
-        } else if (createErr.name === 'ValidationError') {
-          const errs = Object.values(createErr.errors).map((e) => e.message);
-          return res.status(400).json({
-            success: false,
-            message: 'Admin user validation failed',
-            errors: errs,
-          });
-        } else {
-          return res.status(500).json({
-            success: false,
-            message: 'Server error while creating admin user. Please try again.',
-          });
-        }
-      }
-    }
+    // Step 2: Find user with password field (no implicit creation here)
+    const user = await User.findOne({ email: emailValidation.value }).select('+password');
 
     if (!user) {
       // Log failed login attempt (even if user doesn't exist, for security)
