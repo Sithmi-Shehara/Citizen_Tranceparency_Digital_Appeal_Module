@@ -282,58 +282,83 @@ const AppealReview = () => {
 
           {appeal.evidence && (
             <>
-              <div className="section-header">
-                <h2>Evidence</h2>
-              </div>
-              <div className="evidence-preview" style={{ cursor: 'pointer' }}>
-                {appeal.evidenceType === 'video-recording' || appeal.evidenceType === 'video' ? (
-                  <video 
+          <div className="section-header">
+            <h2>Evidence</h2>
+          </div>
+          <div className="evidence-preview" style={{ cursor: 'pointer' }}>
+            {(() => {
+              const base = API_BASE_URL.replace('/api', '');
+              const rawPath = appeal.evidenceUrl || appeal.evidence || '';
+              if (!rawPath) {
+                return (
+                  <div style={{ padding: '20px', textAlign: 'center', color: '#666' }}>
+                    Evidence not available.
+                  </div>
+                );
+              }
+
+              const normalizedPath = rawPath.startsWith('http')
+                ? rawPath
+                : `${base}${rawPath.startsWith('/') ? rawPath : `/${rawPath}`}`;
+
+              const openModal = (type) => {
+                setEvidenceUrl(normalizedPath);
+                setEvidenceType(type);
+                setShowEvidenceModal(true);
+              };
+
+              if (appeal.evidenceType === 'video-recording' || appeal.evidenceType === 'video') {
+                return (
+                  <video
                     controls
-                    src={`${API_BASE_URL.replace('/api', '')}${appeal.evidenceUrl || appeal.evidence}`}
+                    src={normalizedPath}
                     style={{ maxWidth: '100%', height: 'auto', borderRadius: '4px' }}
-                    onClick={() => {
-                      setEvidenceUrl(`${API_BASE_URL.replace('/api', '')}${appeal.evidenceUrl || appeal.evidence}`);
-                      setEvidenceType('video');
-                      setShowEvidenceModal(true);
-                    }}
+                    onClick={() => openModal('video')}
                   >
                     Your browser does not support the video tag.
                   </video>
-                ) : appeal.evidenceType === 'image' || appeal.evidence?.match(/\.(jpg|jpeg|png|gif)$/i) || appeal.evidenceUrl?.match(/\.(jpg|jpeg|png|gif)$/i) ? (
-                  <img 
-                    src={`${API_BASE_URL.replace('/api', '')}${appeal.evidenceUrl || appeal.evidence}`} 
-                    alt="Evidence" 
+                );
+              }
+
+              if (
+                appeal.evidenceType === 'image' ||
+                rawPath.match(/\.(jpg|jpeg|png|gif)$/i)
+              ) {
+                return (
+                  <img
+                    src={normalizedPath}
+                    alt="Evidence"
                     style={{ maxWidth: '100%', height: 'auto', borderRadius: '4px', cursor: 'pointer' }}
-                    onClick={() => {
-                      setEvidenceUrl(`${API_BASE_URL.replace('/api', '')}${appeal.evidenceUrl || appeal.evidence}`);
-                      setEvidenceType('image');
-                      setShowEvidenceModal(true);
-                    }}
+                    onClick={() => openModal('image')}
                     onError={(e) => {
                       e.target.src = 'https://via.placeholder.com/800x400?text=Evidence+Not+Available';
                     }}
                   />
-                ) : (
-                  <div style={{ padding: '20px', textAlign: 'center' }}>
-                    <a 
-                      href={`${API_BASE_URL.replace('/api', '')}${appeal.evidenceUrl || appeal.evidence}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ 
-                        color: '#1280ED', 
-                        textDecoration: 'none',
-                        fontSize: '16px',
-                        fontWeight: '500'
-                      }}
-                    >
-                      📄 View Evidence Document
-                    </a>
-                  </div>
-                )}
-                <p style={{ marginTop: '10px', fontSize: '14px', color: '#666', textAlign: 'center' }}>
-                  Click to view full screen
-                </p>
-              </div>
+                );
+              }
+
+              return (
+                <div style={{ padding: '20px', textAlign: 'center' }}>
+                  <a
+                    href={normalizedPath}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      color: '#1280ED',
+                      textDecoration: 'none',
+                      fontSize: '16px',
+                      fontWeight: '500',
+                    }}
+                  >
+                    📄 View Evidence Document
+                  </a>
+                </div>
+              );
+            })()}
+            <p style={{ marginTop: '10px', fontSize: '14px', color: '#666', textAlign: 'center' }}>
+              Click to view full screen
+            </p>
+          </div>
             </>
           )}
 
