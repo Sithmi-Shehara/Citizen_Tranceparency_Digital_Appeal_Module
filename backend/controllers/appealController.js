@@ -260,10 +260,21 @@ const getAppeal = async (req, res) => {
       });
     }
 
-    // Format evidence URL if exists
+    // Format evidence URL if exists. Normalize any stored absolute or relative paths
+    // so the frontend can always use backendRoot + evidenceUrl.
     let evidenceUrl = null;
     if (appeal.evidence) {
-      evidenceUrl = `/uploads/${path.basename(appeal.evidence)}`;
+      const rawPath = appeal.evidence.replace(/\\/g, '/'); // normalize separators
+      const uploadsIndex = rawPath.lastIndexOf('/uploads/');
+
+      if (uploadsIndex !== -1) {
+        // If path already contains /uploads/, keep everything after that segment
+        const relativeFromUploads = rawPath.substring(uploadsIndex + '/uploads/'.length);
+        evidenceUrl = `/uploads/${relativeFromUploads}`;
+      } else {
+        // Fallback: just take the file name
+        evidenceUrl = `/uploads/${path.basename(rawPath)}`;
+      }
     }
 
     res.status(200).json({
