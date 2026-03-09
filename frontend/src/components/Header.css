@@ -1,0 +1,253 @@
+.header {
+  background-color: var(--background-white);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.header-admin {
+  background-color: var(--admin-dark);
+  border-bottom: 1px solid #243647;
+}
+
+.header-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.header-logo:hover {
+  opacity: 0.8;
+}
+
+.logo-icon {
+  font-size: 32px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+  border-radius: 8px;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-title {
+  font-family: 'Public Sans', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+.logo-subtitle {
+  font-family: 'Public Sans', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.2;
+  color: var(--text-secondary);
+}
+
+.header-admin .logo-title,
+.header-admin .logo-subtitle {
+  color: var(--background-white);
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-link {
+  padding: 10px 20px;
+  text-decoration: none;
+  font-family: 'Public Sans', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--text-secondary);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: var(--primary-blue);
+  background-color: rgba(18, 128, 237, 0.05);
+}
+
+.nav-link.active {
+  color: var(--primary-blue);
+  background-color: rgba(18, 128, 237, 0.1);
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  right: 20px;
+  height: 2px;
+  background-color: var(--primary-blue);
+}
+
+.header-admin .nav-link {
+  color: #91ADC9;
+}
+
+.header-admin .nav-link:hover,
+.header-admin .nav-link.active {
+  color: var(--background-white);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-login,
+.btn-register {
+  padding: 10px 20px;
+  text-decoration: none;
+  font-family: 'Public Sans', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.btn-login {
+  color: var(--text-primary);
+}
+
+.btn-login:hover {
+  color: var(--primary-blue);
+}
+
+.btn-register {
+  background-color: var(--primary-blue);
+  color: white;
+}
+
+.btn-register:hover {
+  background-color: var(--primary-blue-dark);
+}
+
+.btn-logout {
+  padding: 10px 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--background-white);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  font-family: 'Public Sans', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 8px;
+}
+
+.header-admin .mobile-menu-toggle {
+  color: var(--background-white);
+}
+
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  background-color: var(--background-white);
+  border-top: 1px solid var(--border-color);
+  padding: 16px 24px;
+}
+
+.header-admin .mobile-menu {
+  background-color: var(--admin-dark);
+  border-top: 1px solid #243647;
+}
+
+.mobile-nav-link {
+  padding: 12px 0;
+  text-decoration: none;
+  font-family: 'Public Sans', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.mobile-nav-link:last-child {
+  border-bottom: none;
+}
+
+.header-admin .mobile-nav-link {
+  color: #91ADC9;
+  border-bottom-color: #243647;
+}
+
+@media (max-width: 768px) {
+  .header-nav {
+    display: none;
+  }
+
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  .mobile-menu {
+    display: flex;
+  }
+
+  .btn-login,
+  .btn-register {
+    display: none;
+  }
+
+  .header-container {
+    padding: 0 16px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
