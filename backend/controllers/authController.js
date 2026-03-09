@@ -12,7 +12,16 @@ const { logAction } = require('../utils/auditLogger');
 
 // Generate JWT Token
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+  const secret = process.env.JWT_SECRET || 'change_this_in_production';
+
+  // Fallback to a default so registration doesn't crash if JWT_SECRET
+  // is missing in the deployment environment (e.g. Render).
+  // In a real deployment, JWT_SECRET should always be set.
+  if (!process.env.JWT_SECRET) {
+    console.warn('JWT_SECRET is not set. Using a default development secret.');
+  }
+
+  return jwt.sign({ id }, secret, {
     expiresIn: '30d',
   });
 };
